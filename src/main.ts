@@ -5,16 +5,12 @@ import { jsonResponse, Results } from "./types/Types";
 import { view } from "./TS/viewDom";
 
 document.addEventListener("DOMContentLoaded", () => {
-  if(localStorage.theme == "dark"){
-    document.documentElement.classList.add("dark")
-  }else if( localStorage.theme == "light"){
-    document.documentElement.classList.remove("dark")
+  if (localStorage.theme == "dark") {
+    document.documentElement.classList.add("dark");
+  } else if (localStorage.theme == "light") {
+    document.documentElement.classList.remove("dark");
   }
-})
-
-
-
-
+});
 
 let user = document.querySelector("#input-user") as HTMLInputElement;
 
@@ -22,6 +18,7 @@ function search(content: jsonResponse) {
   user.addEventListener("keyup", (event): void | null => {
     let inputDiv = event.target as HTMLInputElement;
     let keycode = event.key.charCodeAt(0);
+    let keyLower = inputDiv.value.toLocaleLowerCase();
 
     if (
       event.key === "Alt" ||
@@ -44,15 +41,15 @@ function search(content: jsonResponse) {
         let titleLower = content.name.title.toLocaleLowerCase();
         let firstLower = content.name.first.toLocaleLowerCase();
         let lastLower = content.name.last.toLocaleLowerCase();
-        let keyLower = inputDiv.value.toLocaleLowerCase();
+
+        let Allname = `${titleLower} ${firstLower} ${lastLower}`
 
         return (
-          titleLower.includes(keyLower) ||
-          firstLower.includes(keyLower) ||
-          lastLower.includes(keyLower)
+         Allname.includes(keyLower) 
         );
       });
       view(arrayFilter);
+      console.log(arrayFilter);
     }
   });
 }
@@ -69,7 +66,6 @@ let buttonActive = document.getElementById(
 ) as HTMLButtonElement;
 
 const darkMode = () => {
-
   if (
     localStorage.theme === "dark" ||
     (!("theme" in localStorage) &&
@@ -81,11 +77,12 @@ const darkMode = () => {
   }
 
   document.documentElement.classList.toggle("dark");
-  buttonActive.classList.toggle("active")
-  buttonActive.classList.toggle("after:left-[unset]")
-  buttonActive.classList.toggle("after:right-0")
+  buttonActive.classList.toggle("active");
+  buttonActive.classList.toggle("after:left-[unset]");
+  buttonActive.classList.toggle("after:right-0");
 
-  localStorage.theme = document.documentElement.className == "dark" ? "dark" : "light";
+  localStorage.theme =
+    document.documentElement.className == "dark" ? "dark" : "light";
 };
 
 buttonActive.addEventListener("click", darkMode);
